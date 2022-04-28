@@ -1,4 +1,4 @@
-package com.streaming_playlists.streaming_playlist;
+package de.dbbw.ti21.webeng2.streaming_playlist;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
