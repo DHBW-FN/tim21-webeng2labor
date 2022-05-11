@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,6 +23,10 @@ public class Song {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "artist")
+    @ManyToMany
+    private List<Artist> artist;
 
     @Column(name = "genre")
     private String genre;
