@@ -32,4 +32,14 @@ public class SongController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping( "/song")
+    public ResponseEntity<Song> postSong(@RequestBody Song song){
+        try{
+            return new ResponseEntity<>(this.repository.save(song), HttpStatus.OK);
+        }
+        catch (Exception ex){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
