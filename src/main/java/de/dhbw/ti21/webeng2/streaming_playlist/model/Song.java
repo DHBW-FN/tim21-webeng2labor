@@ -21,16 +21,16 @@ public class Song {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "title")
+    private String title;
 
-    @Column(name = "artist")
+    @Column(name = "artists")
     @ManyToMany
-    private List<Artist> artist;
+    private List<Artist> artists;
 
     @Column(name = "genre")
     private String genre;
 
-    @Column(name = "releaseDate")
+    @Column(name = "release")
     private int releaseDate;
 }
