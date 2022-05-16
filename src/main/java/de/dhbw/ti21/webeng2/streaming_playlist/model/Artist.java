@@ -24,8 +24,4 @@ public class Artist {
 
     @Column(name = "description")
     private String description;
-
-    @ManyToMany(mappedBy = "artists")
-    @JsonIgnore
-    private Set<Song> songs;
 }

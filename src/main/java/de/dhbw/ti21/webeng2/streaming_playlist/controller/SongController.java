@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @AllArgsConstructor
 @RestController
@@ -37,11 +39,18 @@ public class SongController {
 
     @PostMapping( "/song")
     public ResponseEntity<Song> postSong(@RequestBody Song song){
-        for(Artist artist : song.getArtists()){
-            artist.setId(artistRepository.save(artist).getId());
-        }
-
         try{
+            for (Artist artist : song.getArtists()) {
+                for (Artist artist1 : this.artistRepository.findByName(artist.getName())) {
+                    if(Objects.equals(artist.getName(), artist1.getName())){
+                        Set<Artist> _artists = song.getArtists();
+                        _artists.remove(artist);
+                        _artists.add(artist1);
+                        song.setArtists(_artists);
+                    }
+                }
+            }
+
             return new ResponseEntity<>(this.songRepository.save(song), HttpStatus.OK);
         }
         catch (Exception ex){

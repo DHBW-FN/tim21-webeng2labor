@@ -1,9 +1,6 @@
 package de.dhbw.ti21.webeng2.streaming_playlist.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -25,7 +22,7 @@ public class Song {
     @Column(name = "title")
     private String title;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<Artist> artists;
 
     @Column(name = "genre")
