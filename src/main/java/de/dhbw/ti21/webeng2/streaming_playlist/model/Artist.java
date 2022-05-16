@@ -1,8 +1,10 @@
 package de.dhbw.ti21.webeng2.streaming_playlist.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,4 +24,8 @@ public class Artist {
 
     @Column(name = "description")
     private String description;
+
+    @ManyToMany(mappedBy = "artists")
+    @JsonIgnore
+    private Set<Song> songs;
 }

@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,8 +25,8 @@ public class Song {
     @Column(name = "title")
     private String title;
 
-    @ManyToOne
-    private Artist artist;
+    @ManyToMany
+    private Set<Artist> artists;
 
     @Column(name = "genre")
     private String genre;

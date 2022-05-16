@@ -1,5 +1,6 @@
 package de.dhbw.ti21.webeng2.streaming_playlist.controller;
 
+import de.dhbw.ti21.webeng2.streaming_playlist.model.Artist;
 import de.dhbw.ti21.webeng2.streaming_playlist.model.Song;
 import de.dhbw.ti21.webeng2.streaming_playlist.repository.ArtistRepository;
 import de.dhbw.ti21.webeng2.streaming_playlist.repository.SongRepository;
@@ -36,13 +37,11 @@ public class SongController {
 
     @PostMapping( "/song")
     public ResponseEntity<Song> postSong(@RequestBody Song song){
-        try{
-            if(artistRepository.findByName(song.getArtist().getName()) == null){
-                artistRepository.save(song.getArtist());
-            } else {
-                song.setArtist(artistRepository.findByName(song.getArtist().getName()));
-            }
+        for(Artist artist : song.getArtists()){
+            artist.setId(artistRepository.save(artist).getId());
+        }
 
+        try{
             return new ResponseEntity<>(this.songRepository.save(song), HttpStatus.OK);
         }
         catch (Exception ex){
