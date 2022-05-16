@@ -25,9 +25,8 @@ public class Song {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "artists")
-    @ManyToMany
-    private List<Artist> artists;
+    @ManyToOne
+    private Artist artist;
 
     @Column(name = "genre")
     private String genre;
