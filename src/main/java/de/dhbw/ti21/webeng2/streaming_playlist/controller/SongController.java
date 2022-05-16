@@ -1,6 +1,7 @@
 package de.dhbw.ti21.webeng2.streaming_playlist.controller;
 
 import de.dhbw.ti21.webeng2.streaming_playlist.model.Song;
+import de.dhbw.ti21.webeng2.streaming_playlist.repository.ArtistRepository;
 import de.dhbw.ti21.webeng2.streaming_playlist.repository.SongRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,8 @@ import java.util.List;
 @RestController
 public class SongController {
 
-    private SongRepository repository;
+    private SongRepository songRepository;
+    private ArtistRepository artistRepository;
 
     @GetMapping( "/song")
     public ResponseEntity<List<Song>> getSong(@RequestParam(required = false) Integer id){
@@ -22,20 +24,26 @@ public class SongController {
             List<Song> songs = new ArrayList<>();
 
             if(id == null){
-                return new ResponseEntity<>(this.repository.findAll(), HttpStatus.OK);
+                return new ResponseEntity<>(this.songRepository.findAll(), HttpStatus.OK);
             }
 
-            return new ResponseEntity<>(this.repository.findById(id), HttpStatus.OK);
+            return new ResponseEntity<>(this.songRepository.findById(id), HttpStatus.OK);
         }
         catch (Exception ex){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @PostMapping( "/song")
     public ResponseEntity<Song> postSong(@RequestBody Song song){
         try{
-            return new ResponseEntity<>(this.repository.save(song), HttpStatus.OK);
+            if(artistRepository.findByName(song.getArtist().getName()) == null){
+                artistRepository.save(song.getArtist());
+            }
+
+            song.setArtist(artistRepository.findByName(song.getArtist().getName()));
+
+            return new ResponseEntity<>(this.songRepository.save(song), HttpStatus.OK);
         }
         catch (Exception ex){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
