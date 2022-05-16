@@ -2,7 +2,6 @@ package de.dhbw.ti21.webeng2.streaming_playlist.controller;
 
 import de.dhbw.ti21.webeng2.streaming_playlist.model.Song;
 import de.dhbw.ti21.webeng2.streaming_playlist.repository.SongRepository;
-
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +17,11 @@ public class SongController {
     private SongRepository repository;
 
     @GetMapping( "/song")
-    public ResponseEntity<List<Song>> getSong(@RequestParam(required = false) int id){
+    public ResponseEntity<List<Song>> getSong(@RequestParam(required = false) Integer id){
         try{
             List<Song> songs = new ArrayList<>();
 
-            if(id == 0){
+            if(id == null){
                 return new ResponseEntity<>(this.repository.findAll(), HttpStatus.OK);
             }
 

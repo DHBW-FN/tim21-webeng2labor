@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -32,5 +33,5 @@ public class Song {
     private String genre;
 
     @Column(name = "release")
-    private int releaseDate;
+    private Date releaseDate;
 }
