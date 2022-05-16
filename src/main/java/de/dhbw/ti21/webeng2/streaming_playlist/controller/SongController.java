@@ -39,9 +39,9 @@ public class SongController {
         try{
             if(artistRepository.findByName(song.getArtist().getName()) == null){
                 artistRepository.save(song.getArtist());
+            } else {
+                song.setArtist(artistRepository.findByName(song.getArtist().getName()));
             }
-
-            song.setArtist(artistRepository.findByName(song.getArtist().getName()));
 
             return new ResponseEntity<>(this.songRepository.save(song), HttpStatus.OK);
         }
