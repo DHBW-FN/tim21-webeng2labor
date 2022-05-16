@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @RestController
@@ -40,6 +37,7 @@ public class SongController {
     @PostMapping( "/song")
     public ResponseEntity<Song> postSong(@RequestBody Song song){
         try{
+            //Prevent duplicates in database
             for (Artist artist : song.getArtists()) {
                 for (Artist artist1 : this.artistRepository.findByName(artist.getName())) {
                     if(Objects.equals(artist.getName(), artist1.getName())){
