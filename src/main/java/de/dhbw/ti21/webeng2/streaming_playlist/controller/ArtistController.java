@@ -10,11 +10,16 @@ import de.dhbw.ti21.webeng2.streaming_playlist.repository.ArtistRepository;
 import io.swagger.models.Response;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @AllArgsConstructor
 @RestController
 public class ArtistController {
     private ArtistRepository repository;
+
+    public ArtistController(ArtistRepository repository){
+        this.repository = repository;
+    }
 
     @PostMapping("/artist")
     public ResponseEntity<Artist> postArtist(@RequestBody Artist artist){

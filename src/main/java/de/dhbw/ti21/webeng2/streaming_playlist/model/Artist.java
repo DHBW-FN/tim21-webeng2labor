@@ -25,4 +25,12 @@ public class Artist {
 
     @Column(name = "description")
     private String description;
+
+    public Artist(){}
+
+    public Artist(String name, String description){
+        this.name = name;
+        this.description = description;
+        
+    }
 }
