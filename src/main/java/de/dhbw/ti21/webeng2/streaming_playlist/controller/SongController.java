@@ -37,21 +37,26 @@ public class SongController {
     @PostMapping( "/song")
     public ResponseEntity<Song> postSong(@RequestBody Song song){
         try{
+            //remove duplicate artists from song;
+            song.setArtists(new HashSet<>(song.getArtists()));
+
+
             //Prevent duplicates in database
+            Set<Artist> artists = new HashSet<>(song.getArtists());
             for (Artist artist : song.getArtists()) {
                 for (Artist artist1 : this.artistRepository.findByName(artist.getName())) {
                     if(Objects.equals(artist.getName(), artist1.getName())){
-                        Set<Artist> _artists = song.getArtists();
-                        _artists.remove(artist);
-                        _artists.add(artist1);
-                        song.setArtists(_artists);
+                        artists.remove(artist);
+                        artists.add(artist1);
                     }
                 }
             }
+            song.setArtists(artists);
 
             return new ResponseEntity<>(this.songRepository.save(song), HttpStatus.OK);
         }
         catch (Exception ex){
+            ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

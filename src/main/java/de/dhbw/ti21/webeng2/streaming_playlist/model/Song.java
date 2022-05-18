@@ -1,6 +1,9 @@
 package de.dhbw.ti21.webeng2.streaming_playlist.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
