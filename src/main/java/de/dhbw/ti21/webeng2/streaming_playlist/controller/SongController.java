@@ -37,7 +37,7 @@ public class SongController {
     @PostMapping( "/song")
     public ResponseEntity<Song> postSong(@RequestBody Song song){
         try{
-            //remove duplicate artists from song;
+            //remove duplicate artists from song
             song.setArtists(new HashSet<>(song.getArtists()));
 
 
