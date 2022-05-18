@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,13 +25,12 @@ public class Song {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "artists")
-    @ManyToMany
-    private List<Artist> artists;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<Artist> artists;
 
     @Column(name = "genre")
     private String genre;
 
     @Column(name = "release")
-    private int releaseDate;
+    private Date releaseDate;
 }
