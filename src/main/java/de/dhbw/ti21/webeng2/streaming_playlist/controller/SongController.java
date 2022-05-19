@@ -20,7 +20,7 @@ public class SongController {
     private ArtistRepository artistRepository;
 
     @GetMapping
-    public ResponseEntity<List<Song>> getSongById(@RequestParam(required = false) Map<String, String> params){
+    public ResponseEntity<List<Song>> getSong(@RequestParam(required = false) Map<String, String> params){
         try{
             if(params.isEmpty()){
                 return new ResponseEntity<>(this.songRepository.findAll(), HttpStatus.OK);
