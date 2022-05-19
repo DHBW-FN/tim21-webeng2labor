@@ -57,4 +57,15 @@ public class SongController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping( "/song")
+    public ResponseEntity<Void> deleteSong(@RequestParam Long id){
+        try{
+            this.songRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception ex){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
