@@ -13,13 +13,14 @@ import java.util.*;
 
 @AllArgsConstructor
 @RestController
+@RequestMapping("/song")
 public class SongController {
 
     private SongRepository songRepository;
     private ArtistRepository artistRepository;
 
-    @GetMapping( "/song")
-    public ResponseEntity<List<Song>> getSong(@RequestParam(required = false) Integer id){
+    @GetMapping
+    public ResponseEntity<List<Song>> getSongById(@RequestParam(required = false) Integer id){
         try{
             if(id == null){
                 return new ResponseEntity<>(this.songRepository.findAll(), HttpStatus.OK);
@@ -32,7 +33,7 @@ public class SongController {
         }
     }
 
-    @PostMapping( "/song")
+    @PostMapping
     public ResponseEntity<Song> postSong(@RequestBody Song song){
         try{
             //remove duplicate artists from song
@@ -58,7 +59,7 @@ public class SongController {
         }
     }
 
-    @DeleteMapping( "/song")
+    @DeleteMapping
     public ResponseEntity<Void> deleteSong(@RequestParam Long id){
         try{
             this.songRepository.deleteById(id);
