@@ -20,17 +20,30 @@ public class SongController {
     private ArtistRepository artistRepository;
 
     @GetMapping
-    public ResponseEntity<List<Song>> getSongById(@RequestParam(required = false) Integer id){
+    public ResponseEntity<List<Song>> getSongById(@RequestParam(required = false) Map<String, String> params){
         try{
-            if(id == null){
+            if(params.isEmpty()){
                 return new ResponseEntity<>(this.songRepository.findAll(), HttpStatus.OK);
             }
 
-            return new ResponseEntity<>(this.songRepository.findById(id), HttpStatus.OK);
+            if(params.containsKey("id")){
+                System.out.println(Integer.parseInt(params.get("id")));
+                return new ResponseEntity<>(this.songRepository.findById(Integer.parseInt(params.get("id"))), HttpStatus.OK);
+            }
+
+            if(params.containsKey("title")){
+                return new ResponseEntity<>(this.songRepository.findByTitle(params.get("title")), HttpStatus.OK);
+            }
+
+            if(params.containsKey("artist")){
+                return new ResponseEntity<>(this.songRepository.findByArtists_Name(params.get("artist")), HttpStatus.OK);
+            }
         }
         catch (Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @PostMapping
