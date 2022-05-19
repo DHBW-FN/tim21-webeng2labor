@@ -1,6 +1,5 @@
 package de.dhbw.ti21.webeng2.streaming_playlist.repository;
 
-import de.dhbw.ti21.webeng2.streaming_playlist.model.Artist;
 import de.dhbw.ti21.webeng2.streaming_playlist.model.Song;
 import org.springframework.data.jpa.repository.JpaRepository;
 
