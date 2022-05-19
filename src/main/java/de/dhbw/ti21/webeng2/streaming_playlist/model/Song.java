@@ -1,5 +1,6 @@
 package de.dhbw.ti21.webeng2.streaming_playlist.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class Song {
             CascadeType.MERGE,
             CascadeType.REFRESH
     })
+    @JsonIgnoreProperties("songs")
     private Set<Artist> artists;
 
     @Column(name = "genre")
