@@ -32,11 +32,11 @@ public class SongController {
             }
 
             if(params.containsKey("title")){
-                return new ResponseEntity<>(this.songRepository.findByTitleContaining(params.get("title")), HttpStatus.OK);
+                return ResponseEntity.status(HttpStatus.OK).body(this.songRepository.findByTitleContaining(params.get("title")));
             }
 
             if(params.containsKey("artist")){
-                return new ResponseEntity<>(this.songRepository.findByArtistsName(params.get("artist")), HttpStatus.OK);
+                return ResponseEntity.status(HttpStatus.OK).body(this.songRepository.findByArtistsNameContaining(params.get("artist")));
             }
         }
         catch (Exception ex){
@@ -79,6 +79,7 @@ public class SongController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         catch (Exception ex){
+            ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
