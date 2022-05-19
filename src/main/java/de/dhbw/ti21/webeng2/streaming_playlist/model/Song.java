@@ -25,7 +25,11 @@ public class Song {
     @Column(name = "title")
     private String title;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REFRESH
+    })
     private Set<Artist> artists;
 
     @Column(name = "genre")
