@@ -21,8 +21,6 @@ public class SongController {
     @GetMapping( "/song")
     public ResponseEntity<List<Song>> getSong(@RequestParam(required = false) Integer id){
         try{
-            List<Song> songs = new ArrayList<>();
-
             if(id == null){
                 return new ResponseEntity<>(this.songRepository.findAll(), HttpStatus.OK);
             }
