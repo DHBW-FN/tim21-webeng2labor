@@ -25,6 +25,7 @@ hs_err_pid*
 /out/
 /build/
 /.gradle/
+/gradle/
 
 HELP.md
 .gradle

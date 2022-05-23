@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,9 +28,13 @@ public class Artist {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "artists")
+    @ManyToMany(mappedBy = "artists", cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REFRESH
+    })
     @JsonIgnoreProperties("artists")
-    private List<Song> songs;
+    private Set<Song> songs;
 
     @Override
     public boolean equals(Object o) {
