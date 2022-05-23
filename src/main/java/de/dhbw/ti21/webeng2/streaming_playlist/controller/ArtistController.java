@@ -53,6 +53,12 @@ public class ArtistController {
     @PostMapping
     public ResponseEntity<Artist> postArtist(@RequestBody Artist artist){
         try{
+            for (Artist _artist: this.artistRepository.findByName(artist.getName())){
+                if (artist.equals(_artist)){
+                    return ResponseEntity.status(HttpStatus.CONFLICT).build();
+                }
+            }
+
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(this.artistRepository.save(artist));
