@@ -17,10 +17,6 @@ import lombok.RequiredArgsConstructor;
 public class ArtistController {
     private ArtistRepository repository;
 
-    public ArtistController(ArtistRepository repository){
-        this.repository = repository;
-    }
-
     @PostMapping("/artist")
     public ResponseEntity<Artist> postArtist(@RequestBody Artist artist){
         try{
