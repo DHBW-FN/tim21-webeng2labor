@@ -33,6 +33,18 @@ public class PlaylistController {
                         .status(HttpStatus.OK)
                         .body(Collections.singletonList(this.playlistRepository.findById(Integer.parseInt(params.get("id")))));
             }
+
+            if(params.containsKey("name")){
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(this.playlistRepository.findByNameContaining(params.get("title")));
+            }
+
+            if(params.containsKey("song")){
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(this.playlistRepository.findBySongsTitleContaining(params.get("song")));
+            }
         }
         catch (Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
