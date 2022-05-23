@@ -13,28 +13,46 @@ import java.util.*;
 
 @AllArgsConstructor
 @RestController
+@RequestMapping("/song")
 public class SongController {
 
     private SongRepository songRepository;
     private ArtistRepository artistRepository;
 
-    @GetMapping( "/song")
-    public ResponseEntity<List<Song>> getSong(@RequestParam(required = false) Integer id){
+    @GetMapping
+    public ResponseEntity<List<Song>> getSong(@RequestParam(required = false) Map<String, String> params){
         try{
-            List<Song> songs = new ArrayList<>();
-
-            if(id == null){
+            if(params.isEmpty()){
                 return new ResponseEntity<>(this.songRepository.findAll(), HttpStatus.OK);
             }
 
-            return new ResponseEntity<>(this.songRepository.findById(id), HttpStatus.OK);
+            if(params.containsKey("id")){
+                System.out.println(Integer.parseInt(params.get("id")));
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(Collections.singletonList(this.songRepository.findById(Integer.parseInt(params.get("id")))));
+            }
+
+            if(params.containsKey("title")){
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(this.songRepository.findByTitleContaining(params.get("title")));
+            }
+
+            if(params.containsKey("artist")){
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(this.songRepository.findByArtistsNameContaining(params.get("artist")));
+            }
         }
         catch (Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @PostMapping( "/song")
+    @PostMapping
     public ResponseEntity<Song> postSong(@RequestBody Song song){
         try{
             //remove duplicate artists from song
@@ -60,7 +78,7 @@ public class SongController {
         }
     }
 
-    @DeleteMapping( "/song")
+    @DeleteMapping
     public ResponseEntity<Void> deleteSong(@RequestParam Long id){
         try{
             this.songRepository.deleteById(id);
