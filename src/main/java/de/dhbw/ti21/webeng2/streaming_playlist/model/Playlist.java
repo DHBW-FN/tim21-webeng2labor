@@ -1,5 +1,6 @@
 package de.dhbw.ti21.webeng2.streaming_playlist.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,11 @@ public class Playlist {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "songs")
-    @ManyToMany
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REFRESH
+    })
+    @JsonIgnoreProperties("playlists")
     private List<Song> songs;
 }

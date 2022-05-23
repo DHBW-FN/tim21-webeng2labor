@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -39,4 +40,8 @@ public class Song {
 
     @Column(name = "release")
     private Date releaseDate;
+
+    @ManyToMany(mappedBy = "songs")
+    @JsonIgnoreProperties("songs")
+    private List<Playlist> playlists;
 }
