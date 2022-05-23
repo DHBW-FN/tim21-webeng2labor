@@ -1,29 +1,65 @@
 package de.dhbw.ti21.webeng2.streaming_playlist.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import de.dhbw.ti21.webeng2.streaming_playlist.model.Artist;
 import de.dhbw.ti21.webeng2.streaming_playlist.repository.ArtistRepository;
-import io.swagger.models.Response;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @RestController
+@RequestMapping("/artist")
 public class ArtistController {
-    private ArtistRepository repository;
+    private ArtistRepository artistRepository;
 
-    @PostMapping("/artist")
-    public ResponseEntity<Artist> postArtist(@RequestBody Artist artist){
+    @GetMapping
+    public ResponseEntity<List<Artist>> getArtist(@RequestParam(required = false) Map<String, String> params){
         try{
-            return new ResponseEntity<Artist>(this.repository.save(artist), HttpStatus.OK);
+            if(params.isEmpty()){
+                return new ResponseEntity<>(this.artistRepository.findAll(), HttpStatus.OK);
+            }
+
+            if(params.containsKey("id")){
+                System.out.println(Integer.parseInt(params.get("id")));
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(Collections.singletonList(this.artistRepository.findById(Integer.parseInt(params.get("id")))));
+            }
+
+            if(params.containsKey("name")){
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(this.artistRepository.findByNameContaining(params.get("name")));
+            }
+
+            if(params.containsKey("description")){
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(this.artistRepository.findByDescriptionContaining(params.get("description")));
+            }
         }
         catch (Exception ex){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @PostMapping
+    public ResponseEntity<Artist> postArtist(@RequestBody Artist artist){
+        try{
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(this.artistRepository.save(artist));
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
