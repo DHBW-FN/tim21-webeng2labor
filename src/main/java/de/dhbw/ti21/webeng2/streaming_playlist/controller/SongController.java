@@ -30,7 +30,7 @@ public class SongController {
                 System.out.println(Integer.parseInt(params.get("id")));
                 return ResponseEntity
                         .status(HttpStatus.OK)
-                        .body(this.songRepository.findById(Integer.parseInt(params.get("id"))));
+                        .body(Collections.singletonList(this.songRepository.findById(Integer.parseInt(params.get("id")))));
             }
 
             if(params.containsKey("title")){
@@ -85,7 +85,6 @@ public class SongController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         catch (Exception ex){
-            ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

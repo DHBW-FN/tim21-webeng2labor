@@ -44,4 +44,29 @@ public class Song {
     @ManyToMany(mappedBy = "songs")
     @JsonIgnoreProperties("songs")
     private List<Playlist> playlists;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Song)) return false;
+
+        Song song = (Song) o;
+
+        if (getTitle() != null ? !getTitle().equals(song.getTitle()) : song.getTitle() != null) return false;
+        if (getArtists() != null ? !getArtists().equals(song.getArtists()) : song.getArtists() != null) return false;
+        if (getGenre() != null ? !getGenre().equals(song.getGenre()) : song.getGenre() != null) return false;
+        if (getReleaseDate() != null ? !getReleaseDate().equals(song.getReleaseDate()) : song.getReleaseDate() != null)
+            return false;
+        return getPlaylists() != null ? getPlaylists().equals(song.getPlaylists()) : song.getPlaylists() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getTitle() != null ? getTitle().hashCode() : 0;
+        result = 31 * result + (getArtists() != null ? getArtists().hashCode() : 0);
+        result = 31 * result + (getGenre() != null ? getGenre().hashCode() : 0);
+        result = 31 * result + (getReleaseDate() != null ? getReleaseDate().hashCode() : 0);
+        result = 31 * result + (getPlaylists() != null ? getPlaylists().hashCode() : 0);
+        return result;
+    }
 }
