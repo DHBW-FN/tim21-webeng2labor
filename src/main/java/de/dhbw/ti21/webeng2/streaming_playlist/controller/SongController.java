@@ -28,15 +28,21 @@ public class SongController {
 
             if(params.containsKey("id")){
                 System.out.println(Integer.parseInt(params.get("id")));
-                return new ResponseEntity<>(this.songRepository.findById(Integer.parseInt(params.get("id"))), HttpStatus.OK);
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(this.songRepository.findById(Integer.parseInt(params.get("id"))));
             }
 
             if(params.containsKey("title")){
-                return ResponseEntity.status(HttpStatus.OK).body(this.songRepository.findByTitleContaining(params.get("title")));
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(this.songRepository.findByTitleContaining(params.get("title")));
             }
 
             if(params.containsKey("artist")){
-                return ResponseEntity.status(HttpStatus.OK).body(this.songRepository.findByArtistsNameContaining(params.get("artist")));
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(this.songRepository.findByArtistsNameContaining(params.get("artist")));
             }
         }
         catch (Exception ex){
