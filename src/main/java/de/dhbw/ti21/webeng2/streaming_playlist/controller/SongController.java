@@ -1,6 +1,7 @@
 package de.dhbw.ti21.webeng2.streaming_playlist.controller;
 
 import de.dhbw.ti21.webeng2.streaming_playlist.model.Artist;
+import de.dhbw.ti21.webeng2.streaming_playlist.model.Playlist;
 import de.dhbw.ti21.webeng2.streaming_playlist.model.Song;
 import de.dhbw.ti21.webeng2.streaming_playlist.repository.ArtistRepository;
 import de.dhbw.ti21.webeng2.streaming_playlist.repository.SongRepository;
@@ -81,10 +82,22 @@ public class SongController {
     @DeleteMapping
     public ResponseEntity<Void> deleteSong(@RequestParam Long id){
         try{
+            // check if song exists
             if (!this.songRepository.existsById(id)){
                 return ResponseEntity.noContent().build();
             }
 
+            // check if song is empty
+            if (this.songRepository.findById(id).isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Delete song from all playlists that contain it
+            for (Playlist playlist : this.songRepository.findById(id).get().getPlaylists()) {
+                playlist.getSongs().remove(this.songRepository.findById(id).get());
+            }
+
+            // delete song
             this.songRepository.deleteById(id);
             return ResponseEntity.ok().build();
         }
