@@ -31,7 +31,8 @@ public class Playlist {
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE,
-            CascadeType.REFRESH
+            CascadeType.REFRESH,
+            CascadeType.DETACH
     })
     @JsonIgnoreProperties("playlists")
     private Set<Song> songs;
