@@ -126,10 +126,23 @@ public class PlaylistController {
     @DeleteMapping
     public ResponseEntity<Void> deletePlaylist(@RequestParam Long id){
         try{
+            // check if playlist exists
             if(!this.playlistRepository.existsById(id)){
                 return ResponseEntity.noContent().build();
             }
 
+            // check if playlist is empty
+            if (this.playlistRepository.findById(id).isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // delete playlist in all songs
+            for (Song song : this.playlistRepository.findById(id).get().getSongs()) {
+                song.getPlaylists().remove(this.playlistRepository.findById(id).get());
+                this.songRepository.save(song);
+            }
+
+            // delete playlist
             this.playlistRepository.deleteById(id);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
