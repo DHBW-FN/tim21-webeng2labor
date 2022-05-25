@@ -68,4 +68,19 @@ public class ArtistController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteArtist(@RequestParam long id){
+        try{
+            if (!this.artistRepository.existsById(id)){
+                return ResponseEntity.noContent().build();
+            }
+
+            this.artistRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        catch (Exception ex){
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }
