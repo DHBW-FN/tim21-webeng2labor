@@ -54,10 +54,7 @@ public class PlaylistController {
     @PostMapping
     public ResponseEntity<Playlist> postPlaylist(@RequestBody Playlist playlist){
         try{
-            //remove duplicate songs from song
-            playlist.setSongs(new HashSet<>(playlist.getSongs()));
-
-            Set<Song> songs = new HashSet<>();
+            List<Song> songs = new ArrayList<>();
             for (Song song : playlist.getSongs()) {
                 if (this.songRepository.existsById(song.getId())) {
                     songs.add(this.songRepository.findById(song.getId()));
