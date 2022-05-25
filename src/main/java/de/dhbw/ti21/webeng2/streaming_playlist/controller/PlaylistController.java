@@ -59,7 +59,7 @@ public class PlaylistController {
 
             Set<Song> songs = new HashSet<>();
             for (Song song : playlist.getSongs()) {
-                if (this.songRepository.findById(song.getId()) != null) {
+                if (this.songRepository.existsById(song.getId())) {
                     songs.add(this.songRepository.findById(song.getId()));
                     continue;
                 }
@@ -69,7 +69,9 @@ public class PlaylistController {
                     continue;
                 }
 
-                return ResponseEntity.badRequest().build();
+                if(!songs.contains(song)) {
+                    return ResponseEntity.badRequest().build();
+                }
             }
             playlist.setSongs(songs);
 
