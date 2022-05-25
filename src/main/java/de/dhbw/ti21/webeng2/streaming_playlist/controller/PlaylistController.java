@@ -57,11 +57,9 @@ public class PlaylistController {
             //remove duplicate songs from song
             playlist.setSongs(new HashSet<>(playlist.getSongs()));
 
-            Set<Song> songs = new HashSet<>(playlist.getSongs());
+            Set<Song> songs = new HashSet<>();
             for (Song song : playlist.getSongs()) {
-                songs.remove(song);
-
-                if (this.songRepository.findById(song.getId()) != null) {
+                if (this.songRepository.existsById(song.getId())) {
                     songs.add(this.songRepository.findById(song.getId()));
                     continue;
                 }
@@ -71,7 +69,9 @@ public class PlaylistController {
                     continue;
                 }
 
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                if(!songs.contains(song)) {
+                    return ResponseEntity.badRequest().build();
+                }
             }
             playlist.setSongs(songs);
 
