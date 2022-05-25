@@ -36,14 +36,4 @@ public class Playlist {
     })
     @JsonIgnoreProperties("playlists")
     private List<Song> songs;
-
-    public void addSong(Song song) {
-        this.songs.add(song);
-        song.getPlaylists().add(this);
-    }
-
-    public void removeSong(Song song) {
-        this.songs.remove(song);
-        song.getPlaylists().remove(this);
-    }
 }
