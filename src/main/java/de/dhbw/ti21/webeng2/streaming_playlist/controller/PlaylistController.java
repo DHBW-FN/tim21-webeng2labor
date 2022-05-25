@@ -84,6 +84,26 @@ public class PlaylistController {
         }
     }
 
+    @PostMapping("/song")
+    public ResponseEntity<Playlist> postSongToPlaylist(@RequestParam long playlistId, @RequestParam long songId){
+        try{
+            Playlist playlist = this.playlistRepository.findById(playlistId);
+            Song song = this.songRepository.findById(songId);
+
+            if(playlist == null || song == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            playlist.getSongs().add(song);
+            this.playlistRepository.save(playlist);
+            return ResponseEntity.ok(playlist);
+        }
+        catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
     @DeleteMapping("/song")
     public ResponseEntity<Playlist> removeSongFromPlaylist(@RequestParam long playlistId, @RequestParam long songId){
         try{
