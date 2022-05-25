@@ -53,4 +53,14 @@ public class Artist {
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         return result;
     }
+
+    public void addSong(Song song) {
+        this.songs.add(song);
+        song.getArtists().add(this);
+    }
+
+    public void removeSong(Song song) {
+        this.songs.remove(song);
+        song.getArtists().remove(this);
+    }
 }

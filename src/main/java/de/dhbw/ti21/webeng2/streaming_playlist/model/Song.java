@@ -69,4 +69,24 @@ public class Song {
         result = 31 * result + (getPlaylists() != null ? getPlaylists().hashCode() : 0);
         return result;
     }
+
+    public void addArtist(Artist artist) {
+        this.artists.add(artist);
+        artist.getSongs().add(this);
+    }
+
+    public void removeArtist(Artist artist) {
+        this.artists.remove(artist);
+        artist.getSongs().remove(this);
+    }
+
+    public void addPlaylist(Playlist playlist) {
+        this.playlists.add(playlist);
+        playlist.getSongs().add(this);
+    }
+
+    public void removePlaylist(Playlist playlist) {
+        this.playlists.remove(playlist);
+        playlist.getSongs().remove(this);
+    }
 }
