@@ -81,6 +81,10 @@ public class SongController {
     @DeleteMapping
     public ResponseEntity<Void> deleteSong(@RequestParam Long id){
         try{
+            if (!this.songRepository.existsById(id)){
+                return ResponseEntity.noContent().build();
+            }
+
             this.songRepository.deleteById(id);
             return ResponseEntity.ok().build();
         }
