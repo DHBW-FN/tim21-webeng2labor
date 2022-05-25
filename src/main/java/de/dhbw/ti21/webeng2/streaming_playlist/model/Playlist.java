@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,8 +31,9 @@ public class Playlist {
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE,
-            CascadeType.REFRESH
+            CascadeType.REFRESH,
+            CascadeType.DETACH
     })
     @JsonIgnoreProperties("playlists")
-    private Set<Song> songs;
+    private List<Song> songs;
 }

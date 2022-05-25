@@ -21,7 +21,7 @@ public class ArtistController {
     public ResponseEntity<List<Artist>> getArtist(@RequestParam(required = false) Map<String, String> params){
         try{
             if(params.isEmpty()){
-                return new ResponseEntity<>(this.artistRepository.findAll(), HttpStatus.OK);
+                return ResponseEntity.ok(this.artistRepository.findAll());
             }
 
             if(params.containsKey("id")){

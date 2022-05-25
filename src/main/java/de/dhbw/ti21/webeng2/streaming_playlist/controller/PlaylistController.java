@@ -22,7 +22,7 @@ public class PlaylistController {
     public ResponseEntity<List<Playlist>> getPlaylist(@RequestParam(required = false) Map<String, String> params){
         try{
             if(params.isEmpty()){
-                return new ResponseEntity<>(this.playlistRepository.findAll(), HttpStatus.OK);
+                return ResponseEntity.ok(this.playlistRepository.findAll());
             }
 
             if(params.containsKey("id")){
@@ -45,19 +45,16 @@ public class PlaylistController {
             }
         }
         catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.internalServerError().build();
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping
     public ResponseEntity<Playlist> postPlaylist(@RequestBody Playlist playlist){
         try{
-            //remove duplicate songs from song
-            playlist.setSongs(new HashSet<>(playlist.getSongs()));
-
-            Set<Song> songs = new HashSet<>();
+            List<Song> songs = new ArrayList<>();
             for (Song song : playlist.getSongs()) {
                 if (this.songRepository.existsById(song.getId())) {
                     songs.add(this.songRepository.findById(song.getId()));
@@ -126,10 +123,23 @@ public class PlaylistController {
     @DeleteMapping
     public ResponseEntity<Void> deletePlaylist(@RequestParam Long id){
         try{
+            // check if playlist exists
             if(!this.playlistRepository.existsById(id)){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                return ResponseEntity.noContent().build();
             }
 
+            // check if playlist is empty
+            if (this.playlistRepository.findById(id).isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // delete playlist in all songs
+            for (Song song : this.playlistRepository.findById(id).get().getSongs()) {
+                song.getPlaylists().remove(this.playlistRepository.findById(id).get());
+                this.songRepository.save(song);
+            }
+
+            // delete playlist
             this.playlistRepository.deleteById(id);
             return ResponseEntity.status(HttpStatus.OK).build();
         }

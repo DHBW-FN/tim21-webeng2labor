@@ -30,7 +30,8 @@ public class Song {
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE,
-            CascadeType.REFRESH
+            CascadeType.REFRESH,
+            CascadeType.DETACH
     })
     @JsonIgnoreProperties("songs")
     private Set<Artist> artists;
@@ -41,7 +42,12 @@ public class Song {
     @Column(name = "release")
     private Date releaseDate;
 
-    @ManyToMany(mappedBy = "songs")
+    @ManyToMany(mappedBy = "songs", cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.DETACH
+    })
     @JsonIgnoreProperties("songs")
     private List<Playlist> playlists;
 
