@@ -22,7 +22,7 @@ public class PlaylistController {
     public ResponseEntity<List<Playlist>> getPlaylist(@RequestParam(required = false) Map<String, String> params){
         try{
             if(params.isEmpty()){
-                return new ResponseEntity<>(this.playlistRepository.findAll(), HttpStatus.OK);
+                return ResponseEntity.ok(this.playlistRepository.findAll());
             }
 
             if(params.containsKey("id")){
@@ -45,10 +45,10 @@ public class PlaylistController {
             }
         }
         catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.internalServerError().build();
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping
@@ -127,7 +127,7 @@ public class PlaylistController {
     public ResponseEntity<Void> deletePlaylist(@RequestParam Long id){
         try{
             if(!this.playlistRepository.existsById(id)){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                return ResponseEntity.noContent().build();
             }
 
             this.playlistRepository.deleteById(id);

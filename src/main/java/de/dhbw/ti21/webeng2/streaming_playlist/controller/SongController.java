@@ -23,7 +23,7 @@ public class SongController {
     public ResponseEntity<List<Song>> getSong(@RequestParam(required = false) Map<String, String> params){
         try{
             if(params.isEmpty()){
-                return new ResponseEntity<>(this.songRepository.findAll(), HttpStatus.OK);
+                return ResponseEntity.ok(this.songRepository.findAll());
             }
 
             if(params.containsKey("id")){
@@ -71,10 +71,10 @@ public class SongController {
             }
             song.setArtists(artists);
 
-            return new ResponseEntity<>(this.songRepository.save(song), HttpStatus.OK);
+            return ResponseEntity.ok(this.songRepository.save(song));
         }
         catch (Exception ex){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.internalServerError().build();
         }
     }
 
@@ -82,10 +82,10 @@ public class SongController {
     public ResponseEntity<Void> deleteSong(@RequestParam Long id){
         try{
             this.songRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResponseEntity.ok().build();
         }
         catch (Exception ex){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.internalServerError().build();
         }
     }
 }
