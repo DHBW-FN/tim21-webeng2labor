@@ -136,7 +136,6 @@ public class PlaylistController {
             // delete playlist in all songs
             for (Song song : this.playlistRepository.findById(id).get().getSongs()) {
                 song.getPlaylists().remove(this.playlistRepository.findById(id).get());
-                this.songRepository.save(song);
             }
 
             // delete playlist
