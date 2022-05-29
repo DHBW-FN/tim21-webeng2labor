@@ -28,12 +28,7 @@ public class Artist {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "artists", cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REFRESH,
-            CascadeType.DETACH
-    })
+    @ManyToMany(mappedBy = "artists", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("artists")
     private Set<Song> songs;
 
