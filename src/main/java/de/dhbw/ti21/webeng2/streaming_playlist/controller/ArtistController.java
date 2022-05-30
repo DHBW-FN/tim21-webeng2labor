@@ -1,6 +1,8 @@
 package de.dhbw.ti21.webeng2.streaming_playlist.controller;
 
 import de.dhbw.ti21.webeng2.streaming_playlist.model.Artist;
+import de.dhbw.ti21.webeng2.streaming_playlist.model.Playlist;
+import de.dhbw.ti21.webeng2.streaming_playlist.model.Song;
 import de.dhbw.ti21.webeng2.streaming_playlist.repository.ArtistRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -74,6 +76,13 @@ public class ArtistController {
         try{
             if (!this.artistRepository.existsById(id)){
                 return ResponseEntity.noContent().build();
+            }
+
+            //Disassociate all playlists from this artist's songs
+            for(Song song : this.artistRepository.findById(id).getSongs()){
+                for(Playlist playlist : song.getPlaylists()){
+                    playlist.getSongs().remove(song);
+                }
             }
 
             this.artistRepository.deleteById(id);
